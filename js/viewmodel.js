@@ -101,7 +101,7 @@ var initMap = function() {
           });
 
           var streetViewService = new google.maps.StreetViewService();
-          var radius = 50;
+          var radius = 30;
 
           var getStreetView = function(data, status) {
             if(status == google.maps.StreetViewStatus.OK) {
