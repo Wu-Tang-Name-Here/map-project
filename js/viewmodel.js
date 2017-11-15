@@ -36,10 +36,10 @@ var Location = function(data) {
 var ViewModel = function(){
 	var self = this;
 
-	this.locationList = ko.observable([]);
+	this.locationList = ko.observableArray([]);
 
 	initialLocations.forEach(function(locationItem){
-		this.locationList = ko.observableArray([]);
+		self.locationList.push( new Location(locationItem) );
 	});
 
 	this.currentLocation = ko.observable( this.locationList()[0] );
@@ -48,29 +48,11 @@ var ViewModel = function(){
 		self.currentLocation(clickedLoc);
 	};
 
-	/////MAP//////
-	/*self.myMap = ko.observable({
-		lat: ko.observable(37.759951),
-		lng: ko.observable(-122.415139)
-	})*/
 };
 
 ///////////View/////////////////////////
-/*ko.bindingHandlers.map = {
 
-    init: function (element, valueAccessor, allBindingsAccessor, viewModel) {
-        var mapObj = ko.utils.unwrapObservable(valueAccessor());
-        var latLng = new google.maps.LatLng(
-            ko.utils.unwrapObservable(mapObj.lat),
-            ko.utils.unwrapObservable(mapObj.lng));
-        var mapOptions = { center: latLng,
-                          zoom: 5, 
-                          mapTypeId: google.maps.MapTypeId.ROADMAP};
-
-        mapObj.googleMap = new google.maps.Map(element, mapOptions);
-    }
-};*/
-
+/////MAP/////
 var map;
 
 //creates blank array for all listings
@@ -80,11 +62,11 @@ var markers = [];
 var initMap = function() {
        
 	map = new google.maps.Map(document.getElementById('map'), {
-    center: {lat: 37.759951, lng: -122.415139}, 
-    zoom: 15
+    center: {lat: 37.758778, lng: -122.417022}, 
+    zoom: 14
    });
  
- var largeInfoWindows = new google.maps.InfoWindow();
+ 	var largeInfoWindows = new google.maps.InfoWindow();
       var bounds = new google.maps.LatLngBounds();
 
       for (var i = 0; i < initialLocations.length; i++) {
@@ -109,6 +91,39 @@ var initMap = function() {
         marker.addListener('mouseover', function() {
           populateInfoWindow(this, largeInfoWindows);
         });
+
+    var populateInfoWindow = function(marker, infowindow) {
+        if (infowindow.marker != marker) {
+          infowindow.setContent('');
+          infowindow.marker = marker;
+          infowindow.addListener('closeclick', function(){
+            infowindow.marker = null;
+          });
+
+          var streetViewService = new google.maps.StreetViewService();
+          var radius = 50;
+
+          var getStreetView = function(data, status) {
+            if(status == google.maps.StreetViewStatus.OK) {
+              var nearStreetViewLocation = data.location.latLng;
+              var heading = google.maps.geometry.spherical.computeHeading(nearStreetViewLocation, marker.position);
+                infowindow.setContent('<div' + marker.title + '</div><div id="pano"></div>');
+                  var panormaOptions = {
+                    position: nearStreetViewLocation,
+                    pov: {
+                      heading: heading,
+                      pitch: 30
+                    }
+                  };
+                  var panorama = new google.maps.StreetViewPanorama(document.getElementById('pano'), panormaOptions);
+            } else {
+              infowindow.setContent('<div>' + marker.title + '</div>' + '<div>No Street View Found</div>');
+            }
+          }
+          streetViewService.getPanoramaByLocation(marker.position, radius, getStreetView);
+          infowindow.open(map, marker);
+        }
       }
+    }
 };
 ko.applyBindings(new ViewModel());
