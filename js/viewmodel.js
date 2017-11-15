@@ -58,6 +58,8 @@ var map;
 //creates blank array for all listings
 var markers = [];
 
+var contentString = '<div> + marker.title + </div>'
+
 //function to initialize the map
 var initMap = function() {
        
@@ -66,7 +68,11 @@ var initMap = function() {
     zoom: 14
    });
  
- 	var largeInfoWindows = new google.maps.InfoWindow();
+ var contentString = '<div> + marker.title + </div>'
+    var infowindow = new google.maps.InfoWindow({
+    	content: 'contentString'
+    });
+ 	//var largeInfoWindows = new google.maps.InfoWindow();
       var bounds = new google.maps.LatLngBounds();
 
       for (var i = 0; i < initialLocations.length; i++) {
@@ -88,8 +94,8 @@ var initMap = function() {
         //etends boundries of the map for each marker
         bounds.extend(marker.position);
         //create an onclick event to open an infowindow at each arker
-        marker.addListener('mouseover', function() {
-          populateInfoWindow(this, largeInfoWindows);
+        marker.addListener('click', function() {
+          infowindow.open(map, marker);
         });
 	}
 };
