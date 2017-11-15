@@ -34,7 +34,7 @@
       <img style="max-width: 100%;" src="img/burrito.png">
       <h1 style="color: white; text-align: center;">Burito Places</h1>
       	<ul style="color: white;" data-bind="foreach: locationList">
-      		<li data-bind="text: name"></li>
+      		<li data-bind="text: name, click: $parent.currentLocation"></li>
       	</ul>
       	
     </div>

@@ -70,7 +70,7 @@ var initMap = function() {
  
  var contentString = '<div> + marker.title + </div>'
     var infowindow = new google.maps.InfoWindow({
-    	content: 'contentString'
+    	content: contentString
     });
  	//var largeInfoWindows = new google.maps.InfoWindow();
       var bounds = new google.maps.LatLngBounds();
