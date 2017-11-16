@@ -58,7 +58,7 @@ var map;
 //creates blank array for all listings
 var markers = [];
 
-var contentString = '<div> + marker.title + </div>'
+//var contentString = '<div> + marker.title + </div>'
 
 //function to initialize the map
 var initMap = function() {
@@ -68,10 +68,13 @@ var initMap = function() {
     zoom: 14
    });
  
- var contentString = '<div> + marker.title + </div>'
-    var infowindow = new google.maps.InfoWindow({
-    	content: contentString
-    });
+    /*var contentString = ko.computed( function () {
+		return this.name + " " + this.address;
+	}, this);*/
+
+ //var contentString = '<div> + marker.title + </div>'
+    var largeInfoWindow = new google.maps.InfoWindow();
+
  	//var largeInfoWindows = new google.maps.InfoWindow();
       var bounds = new google.maps.LatLngBounds();
 
@@ -95,8 +98,20 @@ var initMap = function() {
         bounds.extend(marker.position);
         //create an onclick event to open an infowindow at each arker
         marker.addListener('click', function() {
-          infowindow.open(map, marker);
+          populateInfoWindow(this, largeInfoWindow);
         });
+	}
+
+	var populateInfoWindow = function(marker, infowindow) {
+		if (infowindow.marker != marker) {
+			infowindow.marker = marker;
+			infowindow.setContent('<div>' + marker.title + '<p>' + marker.address + '</div>');
+			infowindow.open(map, marker);
+
+			infowindow.addListener('closeclick', function(){
+				infowindow.setMarker(null);
+			})
+		}
 	}
 };
 ko.applyBindings(new ViewModel());
