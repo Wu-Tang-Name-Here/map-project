@@ -49,8 +49,20 @@ var ViewModel = function(){
 	};
 
 	/////Filter
+	this.filter = ko.observable("");
+
+	this.filteredLocations = ko.computed(function() {
+		var filter = this.filter().toLowerCase();
+		if (!filter) {
+			return this.locations();
+		} else {
+			return ko.utils.arrayFilter(this.locations(), function(location) {
+				return ko.utils.stringStartsWith(Location.name().toLowerCase(), filter);
+			})
+		}
+	});
 	/////Identify first matching location by name 
-	this.firstMatch = ko.computed(function() {
+	/*this.firstMatch = ko.computed(function() {
 		var search = this.search().toLowerCase();
 		if (!search){
 			return null;
@@ -59,7 +71,7 @@ var ViewModel = function(){
 				return ko.utils.stringStartsWith(Location.name().toLowerCase(), search);
 			}),
 		}
-	}, ViewModel);
+	}, ViewModel);*/
 
 };
 
