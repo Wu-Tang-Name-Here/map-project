@@ -48,6 +48,19 @@ var ViewModel = function(){
 		self.currentLocation(clickedLoc);
 	};
 
+	/////Filter
+	/////Identify first matching location by name 
+	this.firstMatch = ko.computed(function() {
+		var search = this.search().toLowerCase();
+		if (!search){
+			return null;
+		} else {
+			return ko.utils.arrayFirst(this.filteredLocations(), function(Location) {
+				return ko.utils.stringStartsWith(Location.name().toLowerCase(), search);
+			}),
+		}
+	}, ViewModel);
+
 };
 
 ///////////View/////////////////////////

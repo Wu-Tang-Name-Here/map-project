@@ -33,8 +33,9 @@
     <div class="options-box">
       <img style="max-width: 100%;" src="img/burrito.png">
       <h1 style="color: white; text-align: center;">Burito Places</h1>
+      <p>Filter: <input data-bind="value: filter" /></p>
       	<ul style="color: white;" data-bind="foreach: locationList">
-      		<li data-bind="text: name, click: $parent.populateInfoWindow"></li>
+      		<li data-bind="text: name, click: $root.populateInfoWindow"></li>
       	</ul>
       	
     </div>
