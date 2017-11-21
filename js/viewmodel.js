@@ -61,7 +61,7 @@ var ViewModel = function(){
 				return ko.utils.stringStartsWith(Location.name().toLowerCase(), filter);
 			})
 		}
-	});
+	},);
 	/////Identify first matching location by name 
 	/*this.firstMatch = ko.computed(function() {
 		var search = this.search().toLowerCase();
