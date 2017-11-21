@@ -52,9 +52,10 @@ var ViewModel = function(){
 	this.filter = ko.observable("");
 
 	this.filteredLocations = ko.computed(function() {
-		var filter = this.filter().toLowerCase();
+		console.log("works");
+		var filter = self.filter().toLowerCase();
 		if (!filter) {
-			return this.locations();
+			return self.locationList();
 		} else {
 			return ko.utils.arrayFilter(this.locations(), function(location) {
 				return ko.utils.stringStartsWith(Location.name().toLowerCase(), filter);
