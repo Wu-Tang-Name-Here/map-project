@@ -1,78 +1,75 @@
 //////////////MODEL////////////////////////
 var initialLocations = [
-	{
-			name: 'La Taqueria', 
-			address: '2889 Mission St, San Francisco, CA', 
-			coordinates: {lat: 37.751087, lng: -122.418092}
-		},
-		{
-			name: 'Taqueria El Farolito', 
-			address: '2779 Mission St, San Francisco, CA', 
-			coordinates: {lat: 37.752938, lng:  -122.418218}
-		},
-		{
-			name: 'Taqueria La Cumbre', 
-			address: '515 Valencia St, San Francisco, CA', 
-			coordinates: {lat: 37.764852, lng: -122.421671}
-		},
-		{
-			name: 'El Faro', 
-			address: '2399 Folsom St, San Francisco, CA', 
-			coordinates: {lat: 37.759231, lng: -122.414514}
-		},
-		{
-			name: 'Taqueria Vallarta', 
-			address: '3033 24th St, San Francisco, CA', 
-			coordinates: {lat: 37.752637, lng: -122.412566}
-		}
+    {
+            name: 'La Taqueria',
+            address: '2889 Mission St, San Francisco, CA',
+            coordinates: {lat: 37.751087, lng: -122.418092}
+        },
+        {
+            name: 'Taqueria El Farolito',
+            address: '2779 Mission St, San Francisco, CA',
+            coordinates: {lat: 37.752938, lng:  -122.418218},
+            venueID: '455877bff964a520453d1fe3'
+        },
+        {
+            name: 'Taqueria La Cumbre',
+            address: '515 Valencia St, San Francisco, CA',
+            coordinates: {lat: 37.764852, lng: -122.421671}
+        },
+        {
+            name: 'El Faro',
+            address: '2399 Folsom St, San Francisco, CA',
+            coordinates: {lat: 37.759231, lng: -122.414514}
+        },
+        {
+            name: 'Taqueria Vallarta',
+            address: '3033 24th St, San Francisco, CA',
+            coordinates: {lat: 37.752637, lng: -122.412566}
+        }
 ]
 
 var Location = function(data) {
-	this.name = ko.observable(data.name);
-	this.address = ko.observable(data.address);
-	this.coordinates = ko.observable(data.coordinates);
+    this.name = data.name;
+    this.address = data.address;
+    this.coordinates = data.coordinates;
+    this.marker = data.marker;
 };
 
 var ViewModel = function(){
-	var self = this;
 
-	this.locationList = ko.observableArray([]);
+    var self = this;
 
-	initialLocations.forEach(function(locationItem){
-		self.locationList.push( new Location(locationItem) );
-	});
+    this.locationList = ko.observableArray([]);
 
-	this.currentLocation = ko.observable( this.locationList()[0] );
+    initialLocations.forEach(function(locationItem){
+        self.locationList.push( new Location(locationItem) );
+    });
 
-	this.setLocation = function(clickedLoc) {
-		self.currentLocation(clickedLoc);
-	};
+    this.currentLocation = ko.observable( this.locationList()[0] );
 
-	/////Filter
-	this.filter = ko.observable("");
+    this.setLocation = function(clickedLoc) {
+        self.currentLocation(clickedLoc);
+    };
 
-	this.filteredLocations = ko.computed(function() {
-		console.log("works");
-		var filter = self.filter().toLowerCase();
-		if (!filter) {
-			return self.locationList();
-		} else {
-			return ko.utils.arrayFilter(this.locations(), function(location) {
-				return ko.utils.stringStartsWith(Location.name().toLowerCase(), filter);
-			})
-		}
-	},);
-	/////Identify first matching location by name 
-	/*this.firstMatch = ko.computed(function() {
-		var search = this.search().toLowerCase();
-		if (!search){
-			return null;
-		} else {
-			return ko.utils.arrayFirst(this.filteredLocations(), function(Location) {
-				return ko.utils.stringStartsWith(Location.name().toLowerCase(), search);
-			}),
-		}
-	}, ViewModel);*/
+  this.showMarker = function(location) {
+    console.log(location);
+    google.maps.event.trigger(location.marker,'click');
+  }
+
+  /////Filter
+    this.filter = ko.observable("");
+
+    this.filteredLocations = ko.computed(function() {
+        console.log("works");
+        var filter = self.filter().toLowerCase();
+        if (!filter) {
+            return self.locationList();
+        } else {
+            return ko.utils.arrayFilter(this.locations(), function(location) {
+                return ko.utils.stringStartsWith(Location.name().toLowerCase(), filter);
+            })
+        }
+    },);
 
 };
 
@@ -88,20 +85,20 @@ var markers = [];
 
 //function to initialize the map
 var initMap = function() {
-       
-	map = new google.maps.Map(document.getElementById('map'), {
-    center: {lat: 37.758778, lng: -122.417022}, 
+
+    map = new google.maps.Map(document.getElementById('map'), {
+    center: {lat: 37.758778, lng: -122.417022},
     zoom: 14
    });
- 
+
     /*var contentString = ko.computed( function () {
-		return this.name + " " + this.address;
-	}, this);*/
+        return this.name + " " + this.address;
+    }, this);*/
 
  //var contentString = '<div> + marker.title + </div>'
     var largeInfoWindow = new google.maps.InfoWindow();
 
- 	//var largeInfoWindows = new google.maps.InfoWindow();
+    //var largeInfoWindows = new google.maps.InfoWindow();
       var bounds = new google.maps.LatLngBounds();
 
       for (var i = 0; i < initialLocations.length; i++) {
@@ -119,25 +116,26 @@ var initMap = function() {
           id: i
         });
         //push marker to our array of markers
-        markers.push(marker);
+        initialLocations[i].marker = marker;
+
         //etends boundries of the map for each marker
         bounds.extend(marker.position);
         //create an onclick event to open an infowindow at each arker
         marker.addListener('click', function() {
           populateInfoWindow(this, largeInfoWindow);
         });
-	}
+    }
+  ko.applyBindings(new ViewModel());
 
-	var populateInfoWindow = function(marker, infowindow) {
-		if (infowindow.marker != marker) {
-			infowindow.marker = marker;
-			infowindow.setContent('<div>' + marker.title + '<p>' + marker.address + '</div>');
-			infowindow.open(map, marker);
+    var populateInfoWindow = function(marker, infowindow) {
+        if (infowindow.marker != marker) {
+            infowindow.marker = marker;
+            infowindow.setContent('<div>' + marker.title + '<p>' + marker.address + '</div>');
+            infowindow.open(map, marker);
 
-			infowindow.addListener('closeclick', function(){
-				infowindow.setMarker(null);
-			})
-		}
-	}
+            infowindow.addListener('closeclick', function(){
+                infowindow.setMarker(null);
+            })
+        }
+    }
 };
-ko.applyBindings(new ViewModel());
