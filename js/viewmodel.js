@@ -61,15 +61,16 @@ var ViewModel = function(){
 
     this.filteredLocations = ko.computed(function() {
         console.log("works");
+
         var filter = self.filter().toLowerCase();
         if (!filter) {
             return self.locationList();
         } else {
-            return ko.utils.arrayFilter(this.locations(), function(location) {
-                return ko.utils.stringStartsWith(Location.name().toLowerCase(), filter);
+            return ko.utils.arrayFilter(self.locationItem(), function(item) {
+                return ko.utils(Location.name().toLowerCase().indexOf(filter) > -1);
             })
         }
-    },);
+    });
 
 };
 
