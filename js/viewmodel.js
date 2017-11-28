@@ -145,7 +145,7 @@ var initMap = function() {
 
         //create an onclick event to open an infowindow at each arker
         marker.addListener('click', function() {
-          populateInfoWindow(this, largeInfoWindow);
+          foursquareRequest(this);
         });
     }
   ko.applyBindings(new ViewModel());
@@ -157,7 +157,7 @@ var initMap = function() {
 
             infowindow.setContent('<div>' + marker.title +
                                     '<p>' + marker.address + '</div>'+
-                                    '<p>' + 'FourSquare ');
+                                    '<p>' + 'FourSquare Rating: ' + marker.rating.toString());
             infowindow.open(map, marker);
 
             infowindow.addListener('closeclick', function(){
@@ -180,10 +180,10 @@ var initMap = function() {
           success: function(data) {
             console.log(data);
 
-            var rating = data.response.venue.rating;
-            var hours = data.response.venue.hours;
-            var menu = data.response.venue.menu;
-            var description = data.response.venue.description;
+            marker.rating = data.response.venue.rating;
+            marker.hours = data.response.venue.hours;
+            marker.description = data.response.venue.description;
+            populateInfoWindow(marker, largeInfoWindow);
           }
         });
     }
