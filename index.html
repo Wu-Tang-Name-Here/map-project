@@ -6,9 +6,12 @@
     <meta name="viewport" content="width=device-width">
     <link rel="stylesheet" type="text/css" href="css/bootstrap.css">
 <style type="text/css">
-     html, body { height: 100%; margin: 0; padding: 0; }
      #map {
-      height: 500px;
+        border: 1px solid #999;
+        border-radius: 3px;
+        min-height: 500px;
+        height: 100%;
+        padding: 10px 10px 30px 10px;
     }
     .options-box {
       background: green;
@@ -19,7 +22,6 @@
         padding: 10px 10px 30px 10px;
         text-align: left;
         width: 25%;
-        height: 500px;
         float: left;
     }
    </style>
@@ -33,16 +35,19 @@
       <img style="max-width: 100%;" src="img/burrito.png">
       <h1 style="color: white; text-align: center;">Burito Places</h1>
       <p>Filter: <input data-bind="value: filter, valueUpdate: 'afterkeydown'" /></p>
-        <ul style="color: white;" data-bind="foreach: locationList">
+        <ul style="color: white;" data-bind="foreach: filteredLocations">
             <li data-bind="text: name, click: $parent.showMarker"></li>
         </ul>
 
     </div>
 
-<div id="map" data-bind="map:myMap"></div>
+<div style="max-width: 100%;" id="map" data-bind="map:myMap"></div>
 
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
 <script type='text/javascript' src='js/knockout-3.4.2.js'></script>
 <script src="js/viewmodel.js"></script>
+<script type="js/jquery.js"></script>
 <script async defer
         src="https://maps.googleapis.com/maps/api/js?libraries=geometry&key=AIzaSyDwWUPQ1eQ0aAZiex35Eh3Zm-k-T1qZznk&v=3&callback=initMap">
     </script>
