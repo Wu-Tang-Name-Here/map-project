@@ -160,11 +160,13 @@ var initMap = function() {
                                     '<p>' + 'FourSquare Rating: ' + marker.rating.toString());
             infowindow.open(map, marker);
 
-            infowindow.addListener('closeclick', function(){
+            infowindow.marker.setAnimation(google.maps.Animation.BOUNCE);
+           
+            infowindow.addListener('closeclick', function(){ 
+
             })
         }
     };
-
     /////ajax request for FourSquare API
     var foursquareRequest = function (marker) {
         var apiURL = 'https://api.foursquare.com/v2/venues/';

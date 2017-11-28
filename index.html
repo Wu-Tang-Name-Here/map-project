@@ -30,18 +30,23 @@
 
     @media only screen and (max-width: 700px) {
         .options-box {
-            overflow: hidden;
+            overflow-y: auto;
+            overflow-x: none;
         };
+
     };
 
    </style>
 </head>
 <body style="background-color: lightgrey;">
     <div class="container">
+    	<h1 id="title" style="color: green; text-align: center;">Burrito Places</h1>
+    
     <div class="options-box">
-      <img style="max-width: 100%;" src="img/burrito.png">
-      <h1 id="title" style="color: white; text-align: center;">Burrito Places</h1>
-      <p>Filter: <input id="filter" data-bind="value: filter, valueUpdate: 'afterkeydown'" /></p>
+      <img style="max-width: 100%; margin-bottom: 15px;" src="img/burrito.png">
+      
+      <p>Filter: <input id="filter" name="Filter" size="5" data-bind="value: filter, valueUpdate: 'afterkeydown'" /></p>
+       
         <ul style="color: white; padding-left: 15px;" data-bind="foreach: filteredLocations">
             <li data-bind="text: name, click: $parent.showMarker"></li>
         </ul>
