@@ -109,14 +109,10 @@ var initMap = function() {
     zoom: 14
    });
 
-    /*var contentString = ko.computed( function () {
-        return this.name + " " + this.address;
-    }, this);*/
 
- //var contentString = '<div> + marker.title + </div>'
     var largeInfoWindow = new google.maps.InfoWindow();
 
-    //var largeInfoWindows = new google.maps.InfoWindow();
+
       var bounds = new google.maps.LatLngBounds();
 
       for (var i = 0; i < initialLocations.length; i++) {
@@ -145,7 +141,9 @@ var initMap = function() {
 
         //create an onclick event to open an infowindow at each arker
         marker.addListener('click', function() {
-          foursquareRequest(this);
+            markerBounce(this, marker);
+            foursquareRequest(this);
+
         });
     }
   ko.applyBindings(new ViewModel());
@@ -155,13 +153,14 @@ var initMap = function() {
         if (infowindow.marker != marker) {
             infowindow.marker = marker;
 
+
             infowindow.setContent('<div>' + marker.title +
                                     '<p>' + marker.address + '</div>'+
-                                    '<p>' + 'FourSquare Rating: ' + marker.rating.toString());
+                                    '<p>' + 'Rating: ' + marker.rating.toString());
             infowindow.open(map, marker);
+            
+            //infowindow.marker.setAnimation(google.maps.Animation.BOUNCE);
 
-            infowindow.marker.setAnimation(google.maps.Animation.BOUNCE);
-           
             infowindow.addListener('closeclick', function(){ 
 
             })
@@ -189,5 +188,17 @@ var initMap = function() {
           }
         });
     }
+         /////creates bounce animation when location is clicked
+            var markerBounce = function(marker) {
+                if (marker.getAnimation() === null) {
+                  marker.setAnimation(google.maps.Animation.BOUNCE);
+                  setTimeout(function(){
+                    marker.setAnimation(null);
+                  }, 2100);
+                } else {
+                  marker.setAnimation(google.maps.Animation.NULL);
+                }
+              };
 
 };
+
