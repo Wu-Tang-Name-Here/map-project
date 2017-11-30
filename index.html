@@ -5,61 +5,26 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <link rel="stylesheet" type="text/css" href="css/bootstrap.css">
-<style type="text/css">
-     body {
-        height: 100vh;
-     }
-     #map {
-        border: 1px solid #999;
-        border-radius: 3px;
-        padding: 10px 10px 30px 10px;
-        height: 500px;
-    }
-    .options-box {
-      background: green;
-        border: 1px solid #999;
-        border-radius: 3px;
-        line-height: 25px;
-        padding: 10px 10px 10px 10px;
-        text-align: left;
-        width: 30%;
-        float: left;
-        flex-wrap: wrap;
-        height: 500px;
-    }
-
-    #filter {
-    	width: 100%;
-    }
-
-    @media only screen and (max-width: 700px) {
-        .options-box {
-            overflow-y: auto;
-            overflow-x: none;
-        };
-
-    };
-
-   </style>
+    <link rel="stylesheet" type="text/css" href="css/style.css">
 </head>
-<body style="background-color: lightgrey;">
+<body>
     <div class="container">
-    	<h1 id="title" style="color: green; text-align: center;">Burrito Places</h1>
+    	<h1 id="title">Burrito Places</h1>
     
     <div class="options-box">
-      <img style="max-width: 100%; margin-bottom: 15px;" src="img/burrito.png">
+      <img id="burrito-img" src="img/burrito.png">
       
-      <p>Filter: <input id="filter" name="Filter" data-bind="value: filter, valueUpdate: 'afterkeydown'" /></p>
+      <p id="search">Filter Locations:</p>
+      <input id="filter" name="Filter" data-bind="value: filter, valueUpdate: 'afterkeydown'" />
        
-        <ul style="color: white; padding-left: 15px;" data-bind="foreach: filteredLocations">
+        <ul id="list" data-bind="foreach: filteredLocations">
             <li data-bind="text: name, click: $parent.showMarker"></li>
         </ul>
-
     </div>
 
 <div id="map" data-bind="map:myMap"></div>
 
-
+<p id="disclaimer">*Powered by Google Maps and FourSquare</p>
 
 
 <script type='text/javascript' src='js/knockout-3.4.2.js'></script>

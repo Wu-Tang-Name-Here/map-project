@@ -57,6 +57,7 @@ var Location = function(data) {
     this.marker = data.marker;
 };
 
+////////////View Model/////////////////
 var ViewModel = function(){
 
     var self = this;
@@ -99,7 +100,7 @@ var map;
 //creates blank array for all listings
 var markers = [];
 
-//var contentString = '<div> + marker.title + </div>'
+
 
 //function to initialize the map
 var initMap = function() {
@@ -148,7 +149,7 @@ var initMap = function() {
     }
   ko.applyBindings(new ViewModel());
 
-    /////////populates info window
+    /////////Populates info window
     var populateInfoWindow = function(marker, infowindow) {
         if (infowindow.marker != marker) {
             infowindow.marker = marker;
@@ -159,13 +160,13 @@ var initMap = function() {
                                     '<p>' + 'Rating: ' + marker.rating.toString());
             infowindow.open(map, marker);
             
-            //infowindow.marker.setAnimation(google.maps.Animation.BOUNCE);
 
             infowindow.addListener('closeclick', function(){ 
 
             })
         }
     };
+
     /////ajax request for FourSquare API
     var foursquareRequest = function (marker) {
         var apiURL = 'https://api.foursquare.com/v2/venues/';
@@ -187,12 +188,14 @@ var initMap = function() {
           },
 
           error: function(error) {
-            largeInfoWindow.setContent("<p>FourSquare cannot be reached");
+            largeInfoWindow.setContent('<div>' + marker.title +
+                                    '<p>' + marker.address + '</div>'+
+                                    '<p>' + 'Rating: ' + 'FourSquare cannot be reached');
             largeInfoWindow.open(map, marker);
           }
         });
     }
-         /////creates bounce animation when location is clicked
+         /////Creates bounce animation on marker when location is clicked
             var markerBounce = function(marker) {
                 if (marker.getAnimation() === null) {
                   marker.setAnimation(google.maps.Animation.BOUNCE);
@@ -203,6 +206,5 @@ var initMap = function() {
                   marker.setAnimation(google.maps.Animation.NULL);
                 }
               };
-
 };
 
