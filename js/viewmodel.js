@@ -179,12 +179,16 @@ var initMap = function() {
         $.ajax({
           url: foursquareURL,
           success: function(data) {
-            console.log(data);
 
             marker.rating = data.response.venue.rating;
             marker.hours = data.response.venue.hours;
             marker.description = data.response.venue.description;
             populateInfoWindow(marker, largeInfoWindow);
+          },
+
+          error: function(error) {
+            largeInfoWindow.setContent("<p>FourSquare cannot be reached");
+            largeInfoWindow.open(map, marker);
           }
         });
     }
