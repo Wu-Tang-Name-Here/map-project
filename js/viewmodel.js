@@ -1,53 +1,76 @@
 //////////////MODEL////////////////////////
-var initialLocations = [
+var initialLocations = [{
+        name: 'La Taqueria',
+        address: '2889 Mission St, San Francisco, CA',
+        coordinates: {
+            lat: 37.751087,
+            lng: -122.418092
+        },
+        venueID: '4533c484f964a5208e3b1fe3'
+    },
     {
-            name: 'La Taqueria',
-            address: '2889 Mission St, San Francisco, CA',
-            coordinates: {lat: 37.751087, lng: -122.418092},
-            venueID: '4533c484f964a5208e3b1fe3'
+        name: 'Taqueria El Farolito',
+        address: '2779 Mission St, San Francisco, CA',
+        coordinates: {
+            lat: 37.752938,
+            lng: -122.418218
         },
-        {
-            name: 'Taqueria El Farolito',
-            address: '2779 Mission St, San Francisco, CA',
-            coordinates: {lat: 37.752938, lng:  -122.418218},
-            venueID: '455877bff964a520453d1fe3'
+        venueID: '455877bff964a520453d1fe3'
+    },
+    {
+        name: 'Taqueria La Cumbre',
+        address: '515 Valencia St, San Francisco, CA',
+        coordinates: {
+            lat: 37.764852,
+            lng: -122.421671
         },
-        {
-            name: 'Taqueria La Cumbre',
-            address: '515 Valencia St, San Francisco, CA',
-            coordinates: {lat: 37.764852, lng: -122.421671},
-            venueID: '4533c484f964a5208e3b1fe3'
+        venueID: '4533c484f964a5208e3b1fe3'
+    },
+    {
+        name: 'El Faro',
+        address: '2399 Folsom St, San Francisco, CA',
+        coordinates: {
+            lat: 37.759231,
+            lng: -122.414514
         },
-        {
-            name: 'El Faro',
-            address: '2399 Folsom St, San Francisco, CA',
-            coordinates: {lat: 37.759231, lng: -122.414514},
-            venueID: '4a90ad48f964a5201a1920e3'
+        venueID: '4a90ad48f964a5201a1920e3'
+    },
+    {
+        name: 'Taqueria Vallarta',
+        address: '3033 24th St, San Francisco, CA',
+        coordinates: {
+            lat: 37.752637,
+            lng: -122.412566
         },
-        {
-            name: 'Taqueria Vallarta',
-            address: '3033 24th St, San Francisco, CA',
-            coordinates: {lat: 37.752637, lng: -122.412566},
-            venueID: '49cda4adf964a5200a5a1fe3'
+        venueID: '49cda4adf964a5200a5a1fe3'
+    },
+    {
+        name: 'Papalote Mexican Grill',
+        address: '3409 24th St, San Francisco, CA',
+        coordinates: {
+            lat: 37.751955,
+            lng: -122.420978
         },
-        {
-            name: 'Papalote Mexican Grill',
-            address: '3409 24th St, San Francisco, CA',
-            coordinates: {lat: 37.751955, lng: -122.420978},
-            venueID: '43b439b6f964a520bc2c1fe3'
+        venueID: '43b439b6f964a520bc2c1fe3'
+    },
+    {
+        name: 'El Matate',
+        address: '2406 Bryant St, San Francisco, CA',
+        coordinates: {
+            lat: 37.755781,
+            lng: -122.409632
         },
-        {
-            name: 'El Matate',
-            address: '2406 Bryant St, San Francisco, CA',
-            coordinates: {lat: 37.755781, lng: -122.409632},
-            venueID: '48484314f964a52074501fe3'
+        venueID: '48484314f964a52074501fe3'
+    },
+    {
+        name: "Mateo's Taquerilla",
+        address: '2471 Mission St, San Francisco, CA',
+        coordinates: {
+            lat: 37.757552,
+            lng: -122.418730
         },
-        {
-            name: "Mateo's Taquerilla",
-            address: '2471 Mission St, San Francisco, CA',
-            coordinates: {lat: 37.757552, lng: -122.418730},
-            venueID: '55f1ea7f498eef987c30e8d1'
-        }
+        venueID: '55f1ea7f498eef987c30e8d1'
+    }
 ]
 
 var Location = function(data) {
@@ -58,37 +81,37 @@ var Location = function(data) {
 };
 
 ////////////View Model/////////////////
-var ViewModel = function(){
+var ViewModel = function() {
 
     var self = this;
 
     this.locationList = ko.observableArray([]);
 
-    initialLocations.forEach(function(locationItem){
-        self.locationList.push( new Location(locationItem) );
+    initialLocations.forEach(function(locationItem) {
+        self.locationList.push(new Location(locationItem));
     });
 
-    this.currentLocation = ko.observable( this.locationList()[0] );
+    this.currentLocation = ko.observable(this.locationList()[0]);
 
     this.setLocation = function(clickedLoc) {
         self.currentLocation(clickedLoc);
     };
 
-  this.showMarker = function(location) {
-    google.maps.event.trigger(location.marker,'click');
-  }
+    this.showMarker = function(location) {
+        google.maps.event.trigger(location.marker, 'click');
+    }
 
-  /////Filter
+    /////Filter
     this.filter = ko.observable("");
 
     this.filteredLocations = ko.computed(function() {
-    var filter = self.filter().toLowerCase();
-    return ko.utils.arrayFilter(self.locationList(), function(item) {
-        const isVisible = item.name.toLowerCase().indexOf(filter) > -1 || !filter;
-        item.marker.setVisible(isVisible);
-        return isVisible;
-    })
-});
+        var filter = self.filter().toLowerCase();
+        return ko.utils.arrayFilter(self.locationList(), function(item) {
+            const isVisible = item.name.toLowerCase().indexOf(filter) > -1 || !filter;
+            item.marker.setVisible(isVisible);
+            return isVisible;
+        })
+    });
 
 };
 
@@ -106,17 +129,20 @@ var markers = [];
 var initMap = function() {
 
     map = new google.maps.Map(document.getElementById('map'), {
-    center: {lat: 37.758778, lng: -122.417022},
-    zoom: 14
-   });
+        center: {
+            lat: 37.758778,
+            lng: -122.417022
+        },
+        zoom: 14
+    });
 
 
     var largeInfoWindow = new google.maps.InfoWindow();
 
 
-      var bounds = new google.maps.LatLngBounds();
+    var bounds = new google.maps.LatLngBounds();
 
-      for (var i = 0; i < initialLocations.length; i++) {
+    for (var i = 0; i < initialLocations.length; i++) {
 
         //get position from location array
         var position = initialLocations[i].coordinates;
@@ -126,12 +152,12 @@ var initMap = function() {
 
         //create marker per locations and put into markers array
         var marker = new google.maps.Marker({
-          map: map,
-          position: position,
-          title: title,
-          address: address,
-          animation: google.maps.Animation.DROP,
-          id: venueID
+            map: map,
+            position: position,
+            title: title,
+            address: address,
+            animation: google.maps.Animation.DROP,
+            id: venueID
         });
 
         //push marker to our array of markers
@@ -147,7 +173,7 @@ var initMap = function() {
 
         });
     }
-  ko.applyBindings(new ViewModel());
+    ko.applyBindings(new ViewModel());
 
     /////////Populates info window
     var populateInfoWindow = function(marker, infowindow) {
@@ -156,55 +182,58 @@ var initMap = function() {
 
 
             infowindow.setContent('<div>' + marker.title +
-                                    '<p>' + marker.address + '</div>'+
-                                    '<p>' + 'Rating: ' + marker.rating.toString());
-            infowindow.open(map, marker);
-            
+                '<p>' + marker.address + '</div>' +
+                '<p>' + 'Rating: ' + marker.rating.toString());
 
-            infowindow.addListener('closeclick', function(){ 
+            infowindow.open(map, marker);
+
+            infowindow.addListener('closeclick', function() {
 
             })
         }
     };
 
     /////ajax request for FourSquare API
-    var foursquareRequest = function (marker) {
+    var foursquareRequest = function(marker) {
         var apiURL = 'https://api.foursquare.com/v2/venues/';
         var foursquareClientID = 'YKM1SQVAHAI2ERVFQZNT1BXARDYSGBEACCAOKPTAWLMNVNCK'
-        var foursquareSecret ='2U0X5KPXABRQKNKB1VPTEWYN3SVA0NKMFC1VMQEGMPECEZFB';
+        var foursquareSecret = '2U0X5KPXABRQKNKB1VPTEWYN3SVA0NKMFC1VMQEGMPECEZFB';
         var foursquareVersion = '20170112';
         var venueFoursquareID = marker.id;
 
-        var foursquareURL = apiURL + venueFoursquareID + '?client_id=' + foursquareClientID +  '&client_secret=' + foursquareSecret +'&v=' + foursquareVersion;
+        var foursquareURL = apiURL + venueFoursquareID + '?client_id=' + foursquareClientID + '&client_secret=' + foursquareSecret + '&v=' + foursquareVersion;
 
         $.ajax({
-          url: foursquareURL,
-          success: function(data) {
+            url: foursquareURL,
+            success: function(data) {
 
-            marker.rating = data.response.venue.rating;
-            marker.hours = data.response.venue.hours;
-            marker.description = data.response.venue.description;
-            populateInfoWindow(marker, largeInfoWindow);
-          },
+                marker.rating = data.response.venue.rating;
+                marker.hours = data.response.venue.hours;
+                marker.description = data.response.venue.description;
+                populateInfoWindow(marker, largeInfoWindow);
+            },
 
-          error: function(error) {
-            largeInfoWindow.setContent('<div>' + marker.title +
-                                    '<p>' + marker.address + '</div>'+
-                                    '<p>' + 'Rating: ' + 'FourSquare cannot be reached');
-            largeInfoWindow.open(map, marker);
-          }
+            error: function(error) {
+                largeInfoWindow.setContent('<div>' + marker.title +
+                    '<p>' + marker.address + '</div>' +
+                    '<p>' + 'Rating: ' + 'FourSquare cannot be reached');
+                largeInfoWindow.open(map, marker);
+            }
         });
     }
-         /////Creates bounce animation on marker when location is clicked
-            var markerBounce = function(marker) {
-                if (marker.getAnimation() === null) {
-                  marker.setAnimation(google.maps.Animation.BOUNCE);
-                  setTimeout(function(){
-                    marker.setAnimation(null);
-                  }, 2100);
-                } else {
-                  marker.setAnimation(google.maps.Animation.NULL);
-                }
-              };
+    /////Creates bounce animation on marker when location is clicked
+    var markerBounce = function(marker) {
+        if (marker.getAnimation() === null) {
+            marker.setAnimation(google.maps.Animation.BOUNCE);
+            setTimeout(function() {
+                marker.setAnimation(null);
+            }, 2100);
+        } else {
+            marker.setAnimation(google.maps.Animation.NULL);
+        }
+    };
 };
 
+var mapError = function(error) {
+    alert("Ooops! Looks like Google Maps isn't working right now. Try again later.")
+};

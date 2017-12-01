@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html>
+
 <head>
     <title>Burrito Madness</title>
     <meta charset="utf-8">
@@ -7,31 +8,32 @@
     <link rel="stylesheet" type="text/css" href="css/bootstrap.css">
     <link rel="stylesheet" type="text/css" href="css/style.css">
 </head>
+
 <body>
     <div class="container">
-    	<h1 id="title">Burrito Places</h1>
-    
-    <div class="options-box">
-      <img id="burrito-img" src="img/burrito.png">
-      
-      <p id="search">Filter Locations:</p>
-      <input id="filter" name="Filter" data-bind="value: filter, valueUpdate: 'afterkeydown'" />
-       
-        <ul id="list" data-bind="foreach: filteredLocations">
-            <li data-bind="text: name, click: $parent.showMarker"></li>
-        </ul>
+        <h1 id="title">Burrito Places</h1>
+
+        <div class="options-box">
+            <img id="burrito-img" src="img/burrito.png" alt="Minimalist Burrito">
+
+            <p id="search">Filter Locations:</p>
+            <input id="filter" name="Filter" data-bind="value: filter, valueUpdate: 'afterkeydown'" />
+
+            <ul id="list" data-bind="foreach: filteredLocations">
+                <li data-bind="text: name, click: $parent.showMarker"></li>
+            </ul>
+        </div>
+
+        <div id="map" data-bind="map:myMap"></div>
+
+        <p id="disclaimer">*Powered by Google Maps and FourSquare</p>
     </div>
 
-<div id="map" data-bind="map:myMap"></div>
-
-<p id="disclaimer">*Powered by Google Maps and FourSquare</p>
-
-
-<script type='text/javascript' src='js/knockout-3.4.2.js'></script>
-<script src="js/viewmodel.js"></script>
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
-<script async defer
-        src="https://maps.googleapis.com/maps/api/js?libraries=geometry&key=AIzaSyDwWUPQ1eQ0aAZiex35Eh3Zm-k-T1qZznk&v=3&callback=initMap&">
+    <script src='js/knockout-3.4.2.js'></script>
+    <script src="js/viewmodel.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+    <script async defer src="https://maps.googleapis.com/maps/api/js?libraries=geometry&key=AIzaSyDwWUPQ1eQ0aAZiex35Eh3Zm-k-T1qZznk&v=3&callback=initMap" onerror="mapError()">
     </script>
 </body>
+
 </html>
